@@ -1,0 +1,38 @@
+yoga fuzzy sugeno
+1. nama : 
+2. Stucase : Mahasiswa lulusan terbaik
+3. Variable :
+	a. ipk (rendah, tinggi) = 2 - 3.5, 3-4
+	b. lama study (bulan) (cepat, lama)= 42 - 56, 48 - 96
+	c. nilai sk2pm (rendah, sedang, tinggi) = 0 - 5000, 4000 - 10000, > 9000 
+	d. nilai toefl (rendah, tinggi) 310 (nilai minimum) sampai 677 (nilai maksimum) = 0 - 500, 400 - 677
+4. Bobot :
+	a. tinggi = 10
+	b. sedang = 7
+	c. rendah = 3
+5. Aturan :
+	a. IF a rendah b lama c rendah d rendah = rendah
+	b. IF a rendah b lama c rendah d tinggi = sedang
+	c. IF a rendah b lama c sedang d rendah = rendah
+	d. IF a rendah b lama c sedang d tinggi = sedang
+	e. IF a rendah b lama c tinggi d rendah = sedang
+	f. IF a rendah b lama c tinggi d tinggi = tinggi
+	g. IF a rendah b cepat c rendah d rendah= rendah
+	h. IF a rendah b cepat c rendah d tinggi= sedang
+	i. IF a rendah b cepat c sedang d rendah= rendah
+	j. IF a rendah b cepat c sedang d tinggi= sedang
+	k. IF a rendah b cepat c tinggi d rendah= sedang
+	l. IF a rendah b cepat c tinggi d tinggi= tinggi
+
+	a. IF a tinggi b lama c rendah d rendah = rendah
+	b. IF a tinggi b lama c rendah d tinggi = sedang
+	c. IF a tinggi b lama c sedang d rendah = rendah 
+	d. IF a tinggi b lama c sedang d tinggi = sedang
+	e. IF a tinggi b lama c tinggi d rendah = sedang
+	f. IF a tinggi b lama c tinggi d tinggi = tinggi
+	g. IF a tinggi b cepat c rendah d rendah= rendah
+	h. IF a tinggi b cepat c rendah d tinggi= sedang
+	i. IF a tinggi b cepat c sedang d rendah= rendah
+	j. IF a tinggi b cepat c sedang d tinggi= sedang
+	k. IF a tinggi b cepat c tinggi d rendah= tinggi
+	l. IF a tinggi b cepat c tinggi d tinggi= tinggi
