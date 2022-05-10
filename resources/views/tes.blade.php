@@ -6,7 +6,7 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header card-header-primary">
-          <h6 class="m-0 font-weight-bold text-primary">Tes 2</h6>
+          <h6 class="m-0 font-weight-bold text-primary">Tes</h6>
         </div>
         <div class="card-body">
           <div class="table-responsive">
