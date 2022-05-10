@@ -7,9 +7,11 @@ yoga fuzzy sugeno
 	c. nilai sk2pm (rendah, sedang, tinggi) = 0 - 5000, 4000 - 10000, > 9000 
 	d. nilai toefl (rendah, tinggi) 310 (nilai minimum) sampai 677 (nilai maksimum) = 0 - 500, 400 - 677
 4. Bobot :
-	a. tinggi = 10
-	b. sedang = 7
-	c. rendah = 3
+	a. sangat tinggi = 10
+	b. tinggi = 8
+	c. sedang = 6
+	d. rendah = 4
+	e. sangat rendah = 2
 5. Aturan :
 	a. IF a rendah b lama c rendah d rendah = rendah
 	b. IF a rendah b lama c rendah d tinggi = sedang
