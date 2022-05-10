@@ -14,7 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware(['auth'])->group(function () {
+  Route::get('/', [DashboardController::class, 'dashboard']);
+  Route::get('/tambah-data', [DashboardController::class, 'tambahData']);
+  Route::post('/tambah-data', [DashboardController::class, 'tambahDataPost']);
+  Route::get('/logout', [DashboardController::class, 'logout']);
 });
-Route::get('/tes', [DashboardController::class, 'tes']);
+
+Route::get('/login', [DashboardController::class, 'login'])->name('login')->middleware('guest');
+Route::post('/login', [DashboardController::class, 'loginPost']);

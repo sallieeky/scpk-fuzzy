@@ -4,15 +4,40 @@ namespace App\Http\Controllers;
 
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    public function tes()
+    public function login()
     {
-        // $data = $this->fuzzySugeno();
+        return view('login');
+    }
+    public function loginPost(Request $request)
+    {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            return redirect('/');
+        } else {
+            return back()->with('pesan', "Email atau password salah");
+        }
+    }
+    public function logout()
+    {
+        Auth::logout();
+        return redirect('/login');
+    }
+    public function dashboard()
+    {
         $data = $this->rank();
-        // return $data;
-        return view('tes', compact('data'));
+        return view('dashboard', compact('data'));
+    }
+    public function tambahData()
+    {
+        return view('tambah-data');
+    }
+    public function tambahDataPost(Request $request)
+    {
+        Mahasiswa::create($request->all());
+        return back();
     }
 
     public function fuzzySugeno()
@@ -38,9 +63,11 @@ class DashboardController extends Controller
         }
 
         $bobot = [
-            "tinggi" => 10,
-            "sedang" => 7,
-            "rendah" => 3,
+            "sangat_tinggi" => 10,
+            "tinggi" => 8,
+            "sedang" => 6,
+            "rendah" => 4,
+            "sangat_rendah" => 2,
         ];
 
         $keluaran = [];
@@ -49,27 +76,27 @@ class DashboardController extends Controller
             $keluaranTempPem = 0;
             $keluaranTempPen = 0;
             if ($dt['ipk']["rendah"] != 0 && $dt["lama_studi"]["lama"] != 0 && $dt["sk2pm"]["rendah"] != 0 && $dt["toefl"]["rendah"] != 0) {
-                $keluaranTempPem += min($dt['ipk']["rendah"], $dt["lama_studi"]["lama"], $dt["sk2pm"]["rendah"], $dt["toefl"]["rendah"]) * $bobot["rendah"];
+                $keluaranTempPem += min($dt['ipk']["rendah"], $dt["lama_studi"]["lama"], $dt["sk2pm"]["rendah"], $dt["toefl"]["rendah"]) * $bobot["sangat_rendah"];
                 $keluaranTempPen += min($dt['ipk']["rendah"], $dt["lama_studi"]["lama"], $dt["sk2pm"]["rendah"], $dt["toefl"]["rendah"]);
             }
             if ($dt['ipk']["rendah"] != 0 && $dt["lama_studi"]["lama"] != 0 && $dt["sk2pm"]["rendah"] != 0 && $dt["toefl"]["tinggi"] != 0) {
-                $keluaranTempPem += min($dt['ipk']["rendah"], $dt["lama_studi"]["lama"], $dt["sk2pm"]["rendah"], $dt["toefl"]["tinggi"]) * $bobot["sedang"];
+                $keluaranTempPem += min($dt['ipk']["rendah"], $dt["lama_studi"]["lama"], $dt["sk2pm"]["rendah"], $dt["toefl"]["tinggi"]) * $bobot["sangat_rendah"];
                 $keluaranTempPen += min($dt['ipk']["rendah"], $dt["lama_studi"]["lama"], $dt["sk2pm"]["rendah"], $dt["toefl"]["tinggi"]);
             }
             if ($dt['ipk']["rendah"] != 0 && $dt["lama_studi"]["lama"] != 0 && $dt["sk2pm"]["sedang"] != 0 && $dt["toefl"]["rendah"] != 0) {
-                $keluaranTempPem += min($dt['ipk']["rendah"], $dt["lama_studi"]["lama"], $dt["sk2pm"]["sedang"], $dt["toefl"]["rendah"]) * $bobot["rendah"];
+                $keluaranTempPem += min($dt['ipk']["rendah"], $dt["lama_studi"]["lama"], $dt["sk2pm"]["sedang"], $dt["toefl"]["rendah"]) * $bobot["sangat_rendah"];
                 $keluaranTempPen += min($dt['ipk']["rendah"], $dt["lama_studi"]["lama"], $dt["sk2pm"]["sedang"], $dt["toefl"]["rendah"]);
             }
             if ($dt['ipk']["rendah"] != 0 && $dt["lama_studi"]["lama"] != 0 && $dt["sk2pm"]["sedang"] != 0 && $dt["toefl"]["tinggi"] != 0) {
-                $keluaranTempPem += min($dt['ipk']["rendah"], $dt["lama_studi"]["lama"], $dt["sk2pm"]["sedang"], $dt["toefl"]["tinggi"]) * $bobot["sedang"];
+                $keluaranTempPem += min($dt['ipk']["rendah"], $dt["lama_studi"]["lama"], $dt["sk2pm"]["sedang"], $dt["toefl"]["tinggi"]) * $bobot["rendah"];
                 $keluaranTempPen += min($dt['ipk']["rendah"], $dt["lama_studi"]["lama"], $dt["sk2pm"]["sedang"], $dt["toefl"]["tinggi"]);
             }
             if ($dt['ipk']["rendah"] != 0 && $dt["lama_studi"]["lama"] != 0 && $dt["sk2pm"]["tinggi"] != 0 && $dt["toefl"]["rendah"] != 0) {
-                $keluaranTempPem += min($dt['ipk']["rendah"], $dt["lama_studi"]["lama"], $dt["sk2pm"]["tinggi"], $dt["toefl"]["rendah"]) * $bobot["sedang"];
+                $keluaranTempPem += min($dt['ipk']["rendah"], $dt["lama_studi"]["lama"], $dt["sk2pm"]["tinggi"], $dt["toefl"]["rendah"]) * $bobot["rendah"];
                 $keluaranTempPen += min($dt['ipk']["rendah"], $dt["lama_studi"]["lama"], $dt["sk2pm"]["tinggi"], $dt["toefl"]["rendah"]);
             }
             if ($dt['ipk']["rendah"] != 0 && $dt["lama_studi"]["lama"] != 0 && $dt["sk2pm"]["tinggi"] != 0 && $dt["toefl"]["tinggi"] != 0) {
-                $keluaranTempPem += min($dt['ipk']["rendah"], $dt["lama_studi"]["lama"], $dt["sk2pm"]["tinggi"], $dt["toefl"]["tinggi"]) * $bobot["tinggi"];
+                $keluaranTempPem += min($dt['ipk']["rendah"], $dt["lama_studi"]["lama"], $dt["sk2pm"]["tinggi"], $dt["toefl"]["tinggi"]) * $bobot["sedang"];
                 $keluaranTempPen += min($dt['ipk']["rendah"], $dt["lama_studi"]["lama"], $dt["sk2pm"]["tinggi"], $dt["toefl"]["tinggi"]);
             }
             if ($dt['ipk']["rendah"] != 0 && $dt["lama_studi"]["cepat"] != 0 && $dt["sk2pm"]["rendah"] != 0 && $dt["toefl"]["rendah"] != 0) {
@@ -81,15 +108,15 @@ class DashboardController extends Controller
                 $keluaranTempPen += min($dt['ipk']["rendah"], $dt["lama_studi"]["cepat"], $dt["sk2pm"]["rendah"], $dt["toefl"]["tinggi"]);
             }
             if ($dt['ipk']["rendah"] != 0 && $dt["lama_studi"]["cepat"] != 0 && $dt["sk2pm"]["sedang"] != 0 && $dt["toefl"]["rendah"] != 0) {
-                $keluaranTempPem += min($dt['ipk']["rendah"], $dt["lama_studi"]["cepat"], $dt["sk2pm"]["sedang"], $dt["toefl"]["rendah"]) * $bobot["rendah"];
+                $keluaranTempPem += min($dt['ipk']["rendah"], $dt["lama_studi"]["cepat"], $dt["sk2pm"]["sedang"], $dt["toefl"]["rendah"]) * $bobot["sedang"];
                 $keluaranTempPen += min($dt['ipk']["rendah"], $dt["lama_studi"]["cepat"], $dt["sk2pm"]["sedang"], $dt["toefl"]["rendah"]);
             }
             if ($dt['ipk']["rendah"] != 0 && $dt["lama_studi"]["cepat"] != 0 && $dt["sk2pm"]["sedang"] != 0 && $dt["toefl"]["tinggi"] != 0) {
-                $keluaranTempPem += min($dt['ipk']["rendah"], $dt["lama_studi"]["cepat"], $dt["sk2pm"]["sedang"], $dt["toefl"]["tinggi"]) * $bobot["sedang"];
+                $keluaranTempPem += min($dt['ipk']["rendah"], $dt["lama_studi"]["cepat"], $dt["sk2pm"]["sedang"], $dt["toefl"]["tinggi"]) * $bobot["tinggi"];
                 $keluaranTempPen += min($dt['ipk']["rendah"], $dt["lama_studi"]["cepat"], $dt["sk2pm"]["sedang"], $dt["toefl"]["tinggi"]);
             }
             if ($dt['ipk']["rendah"] != 0 && $dt["lama_studi"]["cepat"] != 0 && $dt["sk2pm"]["tinggi"] != 0 && $dt["toefl"]["rendah"] != 0) {
-                $keluaranTempPem += min($dt['ipk']["rendah"], $dt["lama_studi"]["cepat"], $dt["sk2pm"]["tinggi"], $dt["toefl"]["rendah"]) * $bobot["sedang"];
+                $keluaranTempPem += min($dt['ipk']["rendah"], $dt["lama_studi"]["cepat"], $dt["sk2pm"]["tinggi"], $dt["toefl"]["rendah"]) * $bobot["tinggi"];
                 $keluaranTempPen += min($dt['ipk']["rendah"], $dt["lama_studi"]["cepat"], $dt["sk2pm"]["tinggi"], $dt["toefl"]["rendah"]);
             }
             if ($dt['ipk']["rendah"] != 0 && $dt["lama_studi"]["cepat"] != 0 && $dt["sk2pm"]["tinggi"] != 0 && $dt["toefl"]["tinggi"] != 0) {
@@ -97,7 +124,7 @@ class DashboardController extends Controller
                 $keluaranTempPen += min($dt['ipk']["rendah"], $dt["lama_studi"]["cepat"], $dt["sk2pm"]["tinggi"], $dt["toefl"]["tinggi"]);
             }
             if ($dt['ipk']["tinggi"] != 0 && $dt["lama_studi"]["lama"] != 0 && $dt["sk2pm"]["rendah"] != 0 && $dt["toefl"]["rendah"] != 0) {
-                $keluaranTempPem += min($dt['ipk']["tinggi"], $dt["lama_studi"]["lama"], $dt["sk2pm"]["rendah"], $dt["toefl"]["rendah"]) * $bobot["rendah"];
+                $keluaranTempPem += min($dt['ipk']["tinggi"], $dt["lama_studi"]["lama"], $dt["sk2pm"]["rendah"], $dt["toefl"]["rendah"]) * $bobot["sangat_rendah"];
                 $keluaranTempPen += min($dt['ipk']["tinggi"], $dt["lama_studi"]["lama"], $dt["sk2pm"]["rendah"], $dt["toefl"]["rendah"]);
             }
             if ($dt['ipk']["tinggi"] != 0 && $dt["lama_studi"]["lama"] != 0 && $dt["sk2pm"]["rendah"] != 0 && $dt["toefl"]["tinggi"] != 0) {
@@ -105,7 +132,7 @@ class DashboardController extends Controller
                 $keluaranTempPen += min($dt['ipk']["tinggi"], $dt["lama_studi"]["lama"], $dt["sk2pm"]["rendah"], $dt["toefl"]["tinggi"]);
             }
             if ($dt['ipk']["tinggi"] != 0 && $dt["lama_studi"]["lama"] != 0 && $dt["sk2pm"]["sedang"] != 0 && $dt["toefl"]["rendah"] != 0) {
-                $keluaranTempPem += min($dt['ipk']["tinggi"], $dt["lama_studi"]["lama"], $dt["sk2pm"]["sedang"], $dt["toefl"]["rendah"]) * $bobot["rendah"];
+                $keluaranTempPem += min($dt['ipk']["tinggi"], $dt["lama_studi"]["lama"], $dt["sk2pm"]["sedang"], $dt["toefl"]["rendah"]) * $bobot["sedang"];
                 $keluaranTempPen += min($dt['ipk']["tinggi"], $dt["lama_studi"]["lama"], $dt["sk2pm"]["sedang"], $dt["toefl"]["rendah"]);
             }
             if ($dt['ipk']["tinggi"] != 0 && $dt["lama_studi"]["lama"] != 0 && $dt["sk2pm"]["sedang"] != 0 && $dt["toefl"]["tinggi"] != 0) {
@@ -121,19 +148,19 @@ class DashboardController extends Controller
                 $keluaranTempPen += min($dt['ipk']["tinggi"], $dt["lama_studi"]["lama"], $dt["sk2pm"]["tinggi"], $dt["toefl"]["tinggi"]);
             }
             if ($dt['ipk']["tinggi"] != 0 && $dt["lama_studi"]["cepat"] != 0 && $dt["sk2pm"]["rendah"] != 0 && $dt["toefl"]["rendah"] != 0) {
-                $keluaranTempPem += min($dt['ipk']["tinggi"], $dt["lama_studi"]["cepat"], $dt["sk2pm"]["rendah"], $dt["toefl"]["rendah"]) * $bobot["rendah"];
+                $keluaranTempPem += min($dt['ipk']["tinggi"], $dt["lama_studi"]["cepat"], $dt["sk2pm"]["rendah"], $dt["toefl"]["rendah"]) * $bobot["sedang"];
                 $keluaranTempPen += min($dt['ipk']["tinggi"], $dt["lama_studi"]["cepat"], $dt["sk2pm"]["rendah"], $dt["toefl"]["rendah"]);
             }
             if ($dt['ipk']["tinggi"] != 0 && $dt["lama_studi"]["cepat"] != 0 && $dt["sk2pm"]["rendah"] != 0 && $dt["toefl"]["tinggi"] != 0) {
-                $keluaranTempPem += min($dt['ipk']["tinggi"], $dt["lama_studi"]["cepat"], $dt["sk2pm"]["rendah"], $dt["toefl"]["tinggi"]) * $bobot["sedang"];
+                $keluaranTempPem += min($dt['ipk']["tinggi"], $dt["lama_studi"]["cepat"], $dt["sk2pm"]["rendah"], $dt["toefl"]["tinggi"]) * $bobot["tinggi"];
                 $keluaranTempPen += min($dt['ipk']["tinggi"], $dt["lama_studi"]["cepat"], $dt["sk2pm"]["rendah"], $dt["toefl"]["tinggi"]);
             }
             if ($dt['ipk']["tinggi"] != 0 && $dt["lama_studi"]["cepat"] != 0 && $dt["sk2pm"]["sedang"] != 0 && $dt["toefl"]["rendah"] != 0) {
-                $keluaranTempPem += min($dt['ipk']["tinggi"], $dt["lama_studi"]["cepat"], $dt["sk2pm"]["sedang"], $dt["toefl"]["rendah"]) * $bobot["rendah"];
+                $keluaranTempPem += min($dt['ipk']["tinggi"], $dt["lama_studi"]["cepat"], $dt["sk2pm"]["sedang"], $dt["toefl"]["rendah"]) * $bobot["sedang"];
                 $keluaranTempPen += min($dt['ipk']["tinggi"], $dt["lama_studi"]["cepat"], $dt["sk2pm"]["sedang"], $dt["toefl"]["rendah"]);
             }
             if ($dt['ipk']["tinggi"] != 0 && $dt["lama_studi"]["cepat"] != 0 && $dt["sk2pm"]["sedang"] != 0 && $dt["toefl"]["tinggi"] != 0) {
-                $keluaranTempPem += min($dt['ipk']["tinggi"], $dt["lama_studi"]["cepat"], $dt["sk2pm"]["sedang"], $dt["toefl"]["tinggi"]) * $bobot["sedang"];
+                $keluaranTempPem += min($dt['ipk']["tinggi"], $dt["lama_studi"]["cepat"], $dt["sk2pm"]["sedang"], $dt["toefl"]["tinggi"]) * $bobot["tinggi"];
                 $keluaranTempPen += min($dt['ipk']["tinggi"], $dt["lama_studi"]["cepat"], $dt["sk2pm"]["sedang"], $dt["toefl"]["tinggi"]);
             }
             if ($dt['ipk']["tinggi"] != 0 && $dt["lama_studi"]["cepat"] != 0 && $dt["sk2pm"]["tinggi"] != 0 && $dt["toefl"]["rendah"] != 0) {
@@ -141,10 +168,11 @@ class DashboardController extends Controller
                 $keluaranTempPen += min($dt['ipk']["tinggi"], $dt["lama_studi"]["cepat"], $dt["sk2pm"]["tinggi"], $dt["toefl"]["rendah"]);
             }
             if ($dt['ipk']["tinggi"] != 0 && $dt["lama_studi"]["cepat"] != 0 && $dt["sk2pm"]["tinggi"] != 0 && $dt["toefl"]["tinggi"] != 0) {
-                $keluaranTempPem += min($dt['ipk']["tinggi"], $dt["lama_studi"]["cepat"], $dt["sk2pm"]["tinggi"], $dt["toefl"]["tinggi"]) * $bobot["tinggi"];
+                $keluaranTempPem += min($dt['ipk']["tinggi"], $dt["lama_studi"]["cepat"], $dt["sk2pm"]["tinggi"], $dt["toefl"]["tinggi"]) * $bobot["sangat_tinggi"];
                 $keluaranTempPen += min($dt['ipk']["tinggi"], $dt["lama_studi"]["cepat"], $dt["sk2pm"]["tinggi"], $dt["toefl"]["tinggi"]);
             }
             $hasil = $keluaranTempPem / $keluaranTempPen;
+            $keluaran[$itt]["nama"] = $dt["nama"];
             $keluaran[$itt]['pem'] = $keluaranTempPem;
             $keluaran[$itt]['pen'] = $keluaranTempPen;
             $keluaran[$itt]['hasil'] = $hasil;
