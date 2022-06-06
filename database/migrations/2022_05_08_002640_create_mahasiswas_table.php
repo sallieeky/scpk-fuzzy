@@ -18,6 +18,7 @@ class CreateMahasiswasTable extends Migration
             $table->string("nama");
             $table->string("nim");
             $table->string("prodi");
+            $table->year("tahun");
 
             $table->float("ipk");
             $table->integer("lama_studi");

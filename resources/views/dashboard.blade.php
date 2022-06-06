@@ -41,6 +41,13 @@
                 <tr>
                   <th>No</th>
                   <th>Nama</th>
+                  <th>Nim</th>
+                  <th>Prodi</th>
+                  <th>Tahun Lulus</th>
+                  <th>IPK</th>
+                  <th>Lama Studi</th>
+                  <th>SK2PM</th>
+                  <th>TOEFL</th>
                   <th>Nilai</th>
                 </tr>
               </thead>
@@ -49,6 +56,13 @@
                 <tr>
                   <td>{{ $loop->iteration }}</td>
                   <td>{{ $dt["nama"] }}</td>
+                  <td>{{ $dt["nim"] }}</td>
+                  <td>{{ $dt["prodi"] }}</td>
+                  <td>{{ $dt["tahun"] }}</td>
+                  <td>{{ $dt["ipk"] }}</td>
+                  <td>{{ $dt["lama_studi"] }}</td>
+                  <td>{{ $dt["sk2pm"] }}</td>
+                  <td>{{ $dt["toefl"] }}</td>
                   <td>{{ round($dt["nilai"], 2) }}</td>
                 </tr>
                 @endforeach

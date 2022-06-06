@@ -27,8 +27,18 @@ class DashboardController extends Controller
     }
     public function dashboard()
     {
-        $data = $this->rank();
+        $mhs = Mahasiswa::where('tahun', date('Y'))->get();
+        $data = $this->rank($mhs);
         return view('dashboard', compact('data'));
+    }
+    public function history()
+    {
+        // get mahasiswa 3 tahun terakhir
+        for($i=date("Y")-2; $i<=date("Y"); $i++) {
+            $mhs = Mahasiswa::where('tahun', $i)->get();
+            $data[$i] = $this->rank($mhs);
+        }
+        return view('history', compact('data'));
     }
     public function tambahData()
     {
@@ -40,9 +50,9 @@ class DashboardController extends Controller
         return back();
     }
 
-    public function fuzzySugeno()
+    public function fuzzySugeno($data)
     {
-        $mahasiswa = Mahasiswa::all();
+        $mahasiswa = $data;
         // IPK
         $ipk = $this->countIpk($mahasiswa);
         // Lama Studi
@@ -183,15 +193,22 @@ class DashboardController extends Controller
         for ($i = 0; $i < count($mahasiswa); $i++) {
             $result[$i]['id'] = $mahasiswa[$i]->id;
             $result[$i]['nama'] = $mahasiswa[$i]->nama;
+            $result[$i]['nim'] = $mahasiswa[$i]->nim;
+            $result[$i]['prodi'] = $mahasiswa[$i]->prodi;
+            $result[$i]['tahun'] = $mahasiswa[$i]->tahun;
+            $result[$i]['ipk'] = $mahasiswa[$i]->ipk;
+            $result[$i]['lama_studi'] = $mahasiswa[$i]->lama_studi;
+            $result[$i]['sk2pm'] = $mahasiswa[$i]->sk2pm;
+            $result[$i]['toefl'] = $mahasiswa[$i]->toefl;
             $result[$i]["nilai"] = $keluaran[$i]['hasil'];
         }
 
         return $result;
     }
 
-    public function rank()
+    public function rank($data)
     {
-        $data = $this->fuzzySugeno();
+        $data = $this->fuzzySugeno($data);
         usort($data, function ($a, $b) {
             return $a['nilai'] < $b['nilai'];
         });

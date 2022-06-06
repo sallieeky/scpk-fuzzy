@@ -64,6 +64,10 @@
                     <i class="fas fa-fw fa-plus-square"></i>
                     <span>Tambah Data</span>
                 </a>
+                <a class="nav-link" href="/history">
+                    <i class="fas fa-fw fa-history"></i>
+                    <span>History</span>
+                </a>
                 <a class="nav-link" href="/logout">
                     <i class="fas fa-fw fa-sign-out-alt"></i>
                     <span>Logout</span>

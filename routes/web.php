@@ -18,6 +18,7 @@ Route::middleware(['auth'])->group(function () {
   Route::get('/', [DashboardController::class, 'dashboard']);
   Route::get('/tambah-data', [DashboardController::class, 'tambahData']);
   Route::post('/tambah-data', [DashboardController::class, 'tambahDataPost']);
+  Route::get('/history', [DashboardController::class, 'history']);
   Route::get('/logout', [DashboardController::class, 'logout']);
 });
 
