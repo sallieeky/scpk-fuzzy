@@ -47,7 +47,7 @@ class DashboardController extends Controller
     public function tambahDataPost(Request $request)
     {
         Mahasiswa::create($request->all());
-        return back();
+        return back()->with("pesan", "Data berhasil ditambahkan");
     }
 
     public function fuzzySugeno($data)

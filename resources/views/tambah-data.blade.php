@@ -26,6 +26,11 @@
         <div class="card-body">
           <div class="row">
             <div class="col-md-12">
+              @if (session("pesan"))
+                <div class="alert bg-success text-light">
+                  {{ session("pesan") }}
+                </div>
+              @endif
               <form action="/tambah-data" method="POST">
               @csrf
               <div class="row">
@@ -49,14 +54,20 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-6">
+                <div class="col-4">
                   <div class="form-group">
                     <label for="ipk">IPK</label>
                     <input type="text" class="form-control" id="ipk" aria-describedby="emailHelp" placeholder="IPK" name="ipk" min="3" max="4">
                     <small class="text-info">*contoh: 3.50</small>
                   </div>
                 </div>
-                <div class="col-6">
+                <div class="col-4">
+                  <div class="form-group">
+                    <label for="tahun">Tahun Lulus</label>
+                    <input type="number" class="form-control" id="tahun" aria-describedby="emailHelp" placeholder="Tahun Lulus" name="tahun">
+                  </div>
+                </div>
+                <div class="col-4">
                   <div class="form-group">
                     <label for="lama_studi">Lama Studi (Bulan)</label>
                     <input type="text" class="form-control" id="lama_studi" aria-describedby="emailHelp" placeholder="Lama Studi" name="lama_studi" min="42">
